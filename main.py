@@ -9,12 +9,21 @@ import numpy as np
 
 app = Flask(__name__)
 
+DEPARTMENTS = {
+    "pgp": {
+        "sheet_url": "https://docs.google.com/spreadsheets/d/10vXJRdLfP2WQwUidacy6o8NZH2ZFP5CzIZBAly5XvXE/edit?gid=0#gid=0",
+        "json_keyfile": "/home/manoranjan99/mysite/smooth-aura-427907-f1-ec431d988386.json"
+    },
+    "pgpfin": {
+        "sheet_url": "https://docs.google.com/spreadsheets/d/URL_FOR_DEPARTMENT2/edit#gid=0",
+        "json_keyfile": "/home/manoranjan99/mysite/smooth-aura-427907-f1-ec431d988386.json"
+    },
+    "pgplsm": {
+        "sheet_url": "https://docs.google.com/spreadsheets/d/URL_FOR_DEPARTMENT3/edit#gid=0",
+        "json_keyfile": "/home/manoranjan99/mysite/smooth-aura-427907-f1-ec431d988386.json"
+    }
+}
 
-GOOGLE_SHEET_URL='https://docs.google.com/spreadsheets/d/10vXJRdLfP2WQwUidacy6o8NZH2ZFP5CzIZBAly5XvXE/edit?gid=0#gid=0'
-GOOGLE_SHEET_JSON_KEYFILE_PATH='/home/manoranjan99/mysite/smooth-aura-427907-f1-ec431d988386.json'
-
-google_sheet_url = GOOGLE_SHEET_URL
-json_keyfile_path = GOOGLE_SHEET_JSON_KEYFILE_PATH
 
 def append_in_data_structure(schedule):
 
@@ -51,7 +60,7 @@ def get_schedule_from_date(schedule_df, date):
         print(f"KeyError: {e}. Please check the column names in the Excel sheet.")
     return schedule
 
-def get_schedule_from_sheet():
+def get_schedule_from_sheet(google_sheet_url, json_keyfile_path):
 
     # Setup the Google Sheets API client
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
@@ -118,9 +127,14 @@ def get_schedule_from_sheet():
     return today,tomorrow,today_class,next_day_class
 
 
-@app.route('/')
-def index():
-    today, tomorrow, schedule, tomorrow_schedule = get_schedule_from_sheet()
+@app.route('/<department>')
+def index(department):
+    if department not in DEPARTMENTS:
+        return "Department not found", 404
+    
+    sheet_url = DEPARTMENTS[department]["sheet_url"]
+    json_keyfile_path = DEPARTMENTS[department]["json_keyfile"]
+    today, tomorrow, schedule, tomorrow_schedule = get_schedule_from_sheet(sheet_url,json_keyfile_path)
     return render_template('index.html', today=today, tomorrow=tomorrow, schedule=schedule, tomorrow_schedule=tomorrow_schedule)
 
 
