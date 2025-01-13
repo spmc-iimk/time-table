@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Schedule</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 100%; text-align: center; padding-top: 20px;}
+        @media screen and (min-width: 1024px) {
+           .container { width: 50%; align-items: flex-start; padding: 20px; }
+        }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #3370e0; color: white; font-weight: 400; }
+        tr:nth-child(even) {
+            background-color: #cae5fa;
+        }
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .schedule_date_title { font-size: large; font-weight: 600; }
+        .class_schedule_container{ display:block; background:black; padding: 2%; align-items: center; text-align: center; }
+        @media screen and (min-width: 1024px) {
+            .class_schedule_container {
+                display: flex;
+                align-items: flex-start;
+            }
+        }
+        .title_header{ color: #3476ED; font-size: x-large; padding: 2%; width: 100%; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div>
+        <div class="title_header"> PGP 28 Class Schedule</div>
+
+        <div class="class_schedule_container">
+            <div class="container">
+                <div class="schedule_date_title">Class Schedule for {{ today }}</div>
+                {% if schedule %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Sec A</th>
+                            <th>Sec B</th>
+                            <th>Sec C</th>
+                            <th>Sec D</th>
+                            <th>Sec E</th>
+                            <th>Sec F</th>
+                            <th>Sec G</th>
+                            <th>Sec H</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for row in schedule %}
+
+                        <tr>
+                            {% for entity in row %}
+                            <td>{{ entity }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No classes today.</p>
+                {% endif %}
+            </div>
+
+            <div class="container">
+                <div class="schedule_date_title">Class Schedule for {{ tomorrow }}</div>
+                {% if tomorrow_schedule %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Sec A</th>
+                            <th>Sec B</th>
+                            <th>Sec C</th>
+                            <th>Sec D</th>
+                            <th>Sec E</th>
+                            <th>Sec F</th>
+                            <th>Sec G</th>
+                            <th>Sec H</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for row in tomorrow_schedule %}
+
+                        <tr>
+                            {% for entity in row %}
+                            <td>{{ entity }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No classes tomorrow.</p>
+                {% endif %}
+            </div>
+
+
+        </div>
+
+        <p>CF   - Corporate Finance</p>
+        <p>CMA  - Cost & Management Accounting</p>
+        <p>EE   - Economic Environment</p>
+        <p>HRM  - Human Resource Management</p>
+        <p>IS   - Information Systems</p>
+        <p>LEPM - Legal & Ethical Perspectives for Managers</p>
+        <p>OS   - Optimisation with Spreadsheets</p>
+
+
+    </div>
+
+</body>
+</html>
